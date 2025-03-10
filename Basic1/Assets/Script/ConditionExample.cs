@@ -2,15 +2,13 @@ using UnityEngine;
 
 public class ConditionExample : MonoBehaviour
 {
-    //¿¬»êÀÚ¿Í Á¶°Ç¹®
+    //ì—°ì‚°ìì™€ ì¡°ê±´ë¬¸
     public int health = 100;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
         health -= 1;

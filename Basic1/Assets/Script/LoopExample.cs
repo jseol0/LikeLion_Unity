@@ -4,11 +4,11 @@ public class LoopExample : MonoBehaviour
 {
     void Start()
     {
-        ////for¹®
+        ////forë¬¸
         //for (int i = 1; i <= 10; i++)
         //    Debug.Log("Count : " + i);
 
-        //while¹®
+        //whileë¬¸
         int counter = 0;
         while (counter < 5)
         {

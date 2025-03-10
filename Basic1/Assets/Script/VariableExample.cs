@@ -2,26 +2,23 @@ using UnityEngine;
 
 public class VariableExample : MonoBehaviour
 {
-    //º¯¼ö ¼±¾ð
+    //ë³€ìˆ˜ ì„ ì–¸
     public int playerScore = 0;
     public float speed = 5.5f;
     public string playerName = "Hero";
     public bool isGameOver = false;
 
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //º¯¼öÃâ·Â
+        //ë³€ìˆ˜ì¶œë ¥
         Debug.Log("Player Name : " + playerName);
         Debug.Log("Player Score : " + playerScore);
         Debug.Log("Speed : " + speed);
         Debug.Log("Is Game Over? : " + isGameOver);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
