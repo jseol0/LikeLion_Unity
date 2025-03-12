@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 3130073}
   - component: {fileID: 3130072}
   - component: {fileID: 3130071}
-  - component: {fileID: 3130070}
+  - component: {fileID: 3130074}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -138,19 +138,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3130070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3130069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd29e2da9b9c09b40a223762c0dc47eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 1179824609}
 --- !u!81 &3130071
 AudioListener:
   m_ObjectHideFlags: 0
@@ -218,13 +205,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3130069}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 10, y: 6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3130074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3130069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd29e2da9b9c09b40a223762c0dc47eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 1179824609}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +478,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 16
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!135 &1179824606
 SphereCollider:
