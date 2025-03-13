@@ -1,9 +1,13 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
     public float speed = 5f;
     Animator ani;
+    public GameObject[] bullet;
+    public Transform pos = null;
+    public int level = 0;
 
     void Start()
     {
@@ -32,5 +36,24 @@ public class Player : MonoBehaviour
             ani.SetBool("up", false);
 
         transform.Translate(moveX, moveY, 0);
+
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(bullet[level], pos.position, Quaternion.identity);
+        }
+
+        Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
+        viewPos.x = Mathf.Clamp01(viewPos.x); //x값을 0이상, 1이하로 제한한다.
+        viewPos.y = Mathf.Clamp01(viewPos.y); //y값을 0이상, 1이하로 제한한다.
+        Vector3 worldPos = Camera.main.ViewportToWorldPoint(viewPos);//다시월드좌표로 변환
+        transform.position = worldPos; //좌표를 적용한다
+    }
+
+    public void LevelUp()
+    {
+        if (level < 3)
+            level++;
+        Debug.Log("레벨업! 현재 레벨: " + level);
     }
 }

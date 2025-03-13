@@ -3,51 +3,70 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    public float ss = -2; //몬스터 생성 x값 처음
+    public float es = 2;  //몬스터 생성 x값 끝
+    public float StartTime = 1; //시작
+    public float SpawnStop = 10; //스폰끝나는시간
     public GameObject monster;
-    public GameObject item_power;
+    public GameObject monster2;
 
-    void SpwanMonster()
-    {
-        float randomX = Random.Range(-2f, 2f);
 
-        Instantiate(monster, new Vector3(randomX, transform.position.y, 0f), Quaternion.identity);
-    }
+    bool swi = true;
+    bool swi2 = true;
 
-    void SpwanItem()
-    {
-        float randomX = Random.Range(-2f, 2f);
-
-        Instantiate(item_power, new Vector3(randomX, transform.position.y, 0f), Quaternion.identity);
-    }
-    IEnumerator SpwanMonsterCoroutine()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        while (true)
-        {
-            SpwanMonster();
-            yield return new WaitForSeconds(0.7f);
-        }
-    }
-
-    IEnumerator SpwanItemCoroutine()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        while (true)
-        {
-            SpwanItem();
-            yield return new WaitForSeconds(3f);
-        }
-    }
     void Start()
     {
-        StartCoroutine(SpwanMonsterCoroutine());
-        StartCoroutine(SpwanItemCoroutine());
+        StartCoroutine("RandomSpawn");
+        Invoke("Stop", SpawnStop);
     }
 
-    void Update()
+    //코루틴으로 랜덤하게 생성하기
+    IEnumerator RandomSpawn()
     {
-        
+        while (swi)
+        {
+            //1초마다
+            yield return new WaitForSeconds(StartTime);
+            //x값 랜덤
+            float x = Random.Range(ss, es);
+            //x값은 랜덤 y값은 자기자신값
+            Vector2 r = new Vector2(x, transform.position.y);
+            //몬스터 생성
+            Instantiate(monster, r, Quaternion.identity);
+        }
+    }
+    //코루틴으로 랜덤하게 생성하기
+    IEnumerator RandomSpawn2()
+    {
+        while (swi2)
+        {
+            //3초마다
+            yield return new WaitForSeconds(StartTime + 2f);
+            //x값 랜덤
+            float x = Random.Range(ss, es);
+            //x값은 랜덤 y값은 자기자신값
+            Vector2 r = new Vector2(x, transform.position.y);
+            //몬스터 생성
+            Instantiate(monster2, r, Quaternion.identity);
+        }
+    }
+    void Stop()
+    {
+        swi = false;
+        StopCoroutine("RandomSpawn");
+        //두번째 몬스터 코루틴
+        StartCoroutine("RandomSpawn2");
+
+        //30초뒤에 2번째 몬스터 호출멈추기
+        Invoke("Stop2", SpawnStop + 20);
+
+    }
+
+    void Stop2()
+    {
+        swi2 = false;
+        StopCoroutine("RandomSpawn2");
+        //보스
+
     }
 }
