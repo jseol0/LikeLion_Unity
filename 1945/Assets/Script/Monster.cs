@@ -16,6 +16,17 @@ public class Monster : MonoBehaviour
         //Invoke("CreateBullet", delay);
         StartCoroutine(CreateCoroutine());
     }
+    void Update()
+    {
+        float distanceY = speed * Time.deltaTime;
+
+        transform.Translate(Vector2.down * distanceY);
+    }
+
+    private void OnBecameInvisible()
+    {
+        Destroy(gameObject);
+    }
 
     void CreateBullet()
     {
@@ -36,19 +47,7 @@ public class Monster : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        float distanceY = speed * Time.deltaTime;
-
-        transform.Translate(Vector2.down * distanceY);
-    }
-
-    private void OnBecameInvisible()
-    {
-        Destroy(gameObject);
-    }
-
-    private void OnDestroy()
+    public void Damage(int attack)
     {
         float dropChance = Random.Range(0f, 10f);
 
@@ -56,5 +55,8 @@ public class Monster : MonoBehaviour
         {
             Instantiate(item, transform.position, Quaternion.identity);
         }
+
+        Destroy(gameObject);
     }
+    
 }

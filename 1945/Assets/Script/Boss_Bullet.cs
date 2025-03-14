@@ -1,17 +1,18 @@
 using UnityEngine;
 
-public class Monster_Bullet : MonoBehaviour
+public class Boss_Bullet : MonoBehaviour
 {
     public float speed = 3f;
-    public GameObject effect;
-    void Start()
-    {
-        
-    }
+    Vector2 vec2 = Vector2.down;
 
     void Update()
     {
-        transform.Translate(Vector2.down * speed * Time.deltaTime);
+        transform.Translate(vec2 * speed * Time.deltaTime);
+    }
+
+    public void Move(Vector2 vec)
+    {
+        vec2 = vec;
     }
 
     private void OnBecameInvisible()
@@ -23,9 +24,6 @@ public class Monster_Bullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            GameObject go = Instantiate(effect, collision.transform.position, Quaternion.identity);
-            Destroy(go, 1);
-
             //Destroy(collision.gameObject);
             Destroy(gameObject);
         }

@@ -7,7 +7,10 @@ public class Player : MonoBehaviour
     Animator ani;
     public GameObject[] bullet;
     public Transform pos = null;
+    
     public int level = 0;
+    [SerializeField]
+    private GameObject powerUp;
 
     void Start()
     {
@@ -53,7 +56,21 @@ public class Player : MonoBehaviour
     public void LevelUp()
     {
         if (level < 3)
+        {
             level++;
+            GameObject go = Instantiate(powerUp, transform.position, Quaternion.identity);
+            Destroy(go, 1);
+        }
+        
         Debug.Log("레벨업! 현재 레벨: " + level);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Item"))
+        {
+            LevelUp();
+            Destroy(collision.gameObject);
+        }
     }
 }

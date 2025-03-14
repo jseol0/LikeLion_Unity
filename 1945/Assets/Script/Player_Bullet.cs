@@ -24,7 +24,18 @@ public class Player_Bullet : MonoBehaviour
             GameObject go = Instantiate(effect, collision.transform.position, Quaternion.identity);
             Destroy(go, 1);
 
-            Destroy(collision.gameObject);
+            collision.gameObject.GetComponent<Monster>().Damage(1);
+
+            Destroy(gameObject);
+        }
+
+        if (collision.CompareTag("Boss"))
+        {
+            GameObject go = Instantiate(effect, /*collision.*/transform.position, Quaternion.identity);
+            Destroy(go, 1);
+
+            //collision.gameObject.GetComponent<Monster>().Damage(1);
+
             Destroy(gameObject);
         }
     }
