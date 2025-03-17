@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class Player : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class Player : MonoBehaviour
     Animator ani;
     public GameObject[] bullet;
     public Transform pos = null;
+    public GameObject lazer;
+    public float gValue = 0f;
     
     public int level = 0;
     [SerializeField]
@@ -15,6 +18,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         ani = GetComponent<Animator>();
+        //Lazer = gameObject.GetComponent<Lazer>();
     }
 
     void Update()
@@ -45,6 +49,35 @@ public class Player : MonoBehaviour
         {
             Instantiate(bullet[level], pos.position, Quaternion.identity);
         }
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            gValue += Time.deltaTime;
+
+            if (gValue >= 1)
+            {
+                GameObject go = Instantiate(lazer, pos.position, Quaternion.identity);
+                Destroy(go, 3);
+                gValue = 0;
+            }
+        }
+        else
+        {
+            if (gValue > 0)
+            {
+                gValue -= Time.deltaTime;
+            }
+        }
+
+        //if (Input.GetKey(KeyCode.Z))
+        //{
+        //    lazer.SetActive(true);
+        //}
+        //else
+        //{
+        //    lazer.SetActive(false);
+        //}
+
 
         Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
         viewPos.x = Mathf.Clamp01(viewPos.x); //x값을 0이상, 1이하로 제한한다.

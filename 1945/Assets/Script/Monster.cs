@@ -4,6 +4,8 @@ using UnityEngine.Rendering;
 
 public class Monster : MonoBehaviour
 {
+
+    public int HP = 100;
     public float speed = 2f;
     public float delay = 1f;
     public Transform ms1;
@@ -49,14 +51,25 @@ public class Monster : MonoBehaviour
 
     public void Damage(int attack)
     {
+        HP -= attack;
+
+        if (HP <= 0)
+        {
+
+            ItemDrop();
+            Destroy(gameObject);
+            //PoolManager.Instance.Return(gameObject);
+        }
+    }
+
+    void ItemDrop()
+    {
         float dropChance = Random.Range(0f, 10f);
 
         if (dropChance <= 3f)
         {
             Instantiate(item, transform.position, Quaternion.identity);
         }
-
-        Destroy(gameObject);
     }
     
 }

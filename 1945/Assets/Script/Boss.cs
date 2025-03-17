@@ -11,10 +11,25 @@ public class Boss : MonoBehaviour
     public Transform pos1;
     public Transform pos2;
 
+    //[SerializeField]
+    //GameObject textBossWarning;
+
     void Start()
     {
+        Invoke("Hide", 2);
         StartCoroutine(BossMissle());
         StartCoroutine(CircleFire());
+    }
+
+    void Hide()
+    {
+        //GameObject.Find("TextBoss").SetActive(false);
+        GameObject textBoss = GameObject.FindWithTag("BossWarning"); // "BossText" 태그가 있는 오브젝트 찾기
+
+        if (textBoss != null)
+        {
+            textBoss.SetActive(false);
+        }
     }
 
     IEnumerator BossMissle()
@@ -48,7 +63,6 @@ public class Boss : MonoBehaviour
         //원 형태로 방사하는 발사체 생성(count 갯수 만큼)
         while (true)
         {
-
             for (int i = 0; i < count; ++i)
             {
                 //발사체 생성
@@ -70,7 +84,6 @@ public class Boss : MonoBehaviour
 
             //3초마다 미사일 발사
             yield return new WaitForSeconds(attackRate);
-
         }
     }
 

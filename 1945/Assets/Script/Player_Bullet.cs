@@ -3,6 +3,7 @@ using UnityEngine;
 public class Player_Bullet : MonoBehaviour
 {
     public float speed = 4f;
+    public int Attack = 10;
     public GameObject effect;
 
     private void Update()
@@ -24,7 +25,7 @@ public class Player_Bullet : MonoBehaviour
             GameObject go = Instantiate(effect, collision.transform.position, Quaternion.identity);
             Destroy(go, 1);
 
-            collision.gameObject.GetComponent<Monster>().Damage(1);
+            collision.gameObject.GetComponent<Monster>().Damage(Attack);
 
             Destroy(gameObject);
         }
