@@ -11,7 +11,8 @@ public class Monster : MonoBehaviour
     public Transform ms1;
     public Transform ms2;
     public GameObject bullet;
-    public GameObject item;
+
+    public GameObject item = null;
 
     void Start()
     {
@@ -56,9 +57,9 @@ public class Monster : MonoBehaviour
         if (HP <= 0)
         {
 
-            ItemDrop();
-            Destroy(gameObject);
-            //PoolManager.Instance.Return(gameObject);
+            //ItemDrop();
+            //Destroy(gameObject);
+            PoolManager.Instance.Return(gameObject);
         }
     }
 

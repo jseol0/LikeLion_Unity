@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
     {
         textBossWarning.SetActive(false);
 
-        //PoolManager.Instance.CreatePool(monster, 10);
+        PoolManager.Instance.CreatePool(monster, 10);
     }
 
     void Start()
@@ -43,10 +43,10 @@ public class SpawnManager : MonoBehaviour
             //x값은 랜덤 y값은 자기자신값
             Vector2 r = new Vector2(x, transform.position.y);
             //몬스터 생성
-            Instantiate(monster, r, Quaternion.identity);
+            //Instantiate(monster, r, Quaternion.identity);
 
-            // GameObject enemy =  PoolManager.Instance.Get(monster);
-            // enemy.transform.position = r;
+            GameObject enemy =  PoolManager.Instance.Get(monster);
+            enemy.transform.position = r;
         }
     }
     //코루틴으로 랜덤하게 생성하기
