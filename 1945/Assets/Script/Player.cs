@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class Player : MonoBehaviour
     public int level = 0;
     [SerializeField]
     private GameObject powerUp;
+
+    public Image Gage;
 
     void Start()
     {
@@ -53,6 +56,7 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.Z))
         {
             gValue += Time.deltaTime;
+            Gage.fillAmount = gValue;
 
             if (gValue >= 1)
             {
@@ -66,6 +70,7 @@ public class Player : MonoBehaviour
             if (gValue > 0)
             {
                 gValue -= Time.deltaTime;
+                Gage.fillAmount = gValue;
             }
         }
 
