@@ -43,10 +43,10 @@ public class SpawnManager : MonoBehaviour
             //x값은 랜덤 y값은 자기자신값
             Vector2 r = new Vector2(x, transform.position.y);
             //몬스터 생성
-            //Instantiate(monster, r, Quaternion.identity);
+            Instantiate(monster, r, Quaternion.identity);
 
-            GameObject enemy =  PoolManager.Instance.Get(monster);
-            enemy.transform.position = r;
+            //GameObject enemy =  PoolManager.Instance.Get(monster);
+            //enemy.transform.position = r;
         }
     }
     //코루틴으로 랜덤하게 생성하기
@@ -82,7 +82,19 @@ public class SpawnManager : MonoBehaviour
         StopCoroutine("RandomSpawn2");
         //보스
         textBossWarning.SetActive(true);
+        StartCoroutine("Shake");
         Vector2 pos = new Vector3(0, 5.69f, 0);
         GameObject go = Instantiate(boss, pos, Quaternion.identity);
+    }
+
+    IEnumerator Shake()
+    {
+        yield return new WaitForSeconds(0.2f);
+        CameraShake.instance.CameraShakeShow();
+        yield return new WaitForSeconds(0.2f);
+        CameraShake.instance.CameraShakeShow();
+        yield return new WaitForSeconds(0.2f);
+        CameraShake.instance.CameraShakeShow();
+
     }
 }

@@ -34,7 +34,7 @@ public class Homing : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Destroy(collision.gameObject);
+            //Destroy(collision.gameObject);
         }
     }
 

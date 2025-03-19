@@ -25,8 +25,8 @@ public class Player_Bullet : MonoBehaviour
             GameObject go = Instantiate(effect, collision.transform.position, Quaternion.identity);
             Destroy(go, 1);
 
-            //collision.gameObject.GetComponent<Monster>().Damage(Attack);
-            PoolManager.Instance.Return(collision.gameObject);
+            collision.gameObject.GetComponent<Monster>().Damage(Attack);
+            //PoolManager.Instance.Return(collision.gameObject);
 
             Destroy(gameObject);
         }

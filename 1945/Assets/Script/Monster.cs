@@ -57,9 +57,9 @@ public class Monster : MonoBehaviour
         if (HP <= 0)
         {
 
-            //ItemDrop();
-            //Destroy(gameObject);
-            PoolManager.Instance.Return(gameObject);
+            ItemDrop();
+            Destroy(gameObject);
+            //PoolManager.Instance.Return(gameObject);
         }
     }
 
@@ -67,7 +67,7 @@ public class Monster : MonoBehaviour
     {
         float dropChance = Random.Range(0f, 10f);
 
-        if (dropChance <= 3f)
+        if (dropChance <= 4f)
         {
             Instantiate(item, transform.position, Quaternion.identity);
         }

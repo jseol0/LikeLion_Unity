@@ -19,6 +19,7 @@ public class Boss : MonoBehaviour
         Invoke("Hide", 2);
         StartCoroutine(BossMissle());
         StartCoroutine(CircleFire());
+        //CameraShake.instance.CarmerShakeShow();
     }
 
     void Hide()
