@@ -8,8 +8,20 @@ public class Player : MonoBehaviour
     public float speed = 5;
     public float jumpUp = 10;
     public float power = 5;
+
     public Vector3 direction;
     public GameObject slash;
+    public GameObject jumpDust;
+    
+    //벽점프
+    public Transform wallChk;
+    public float wallchkDistance;
+    public LayerMask wLayer;
+    public float slidingSpeed;
+    public float wallJumpPower;
+    public bool isWallJump = false;
+    float isRight = 1;
+    bool isWall;
 
     //그림자
     public GameObject Shadow1;
@@ -41,6 +53,9 @@ public class Player : MonoBehaviour
             sp.flipX = true;
             pAnimator.SetBool("Run", true);
 
+            //점프 벽잡기 방향
+            isRight = -1;
+
             for (int i = 0; i < sh.Count; i++)
             {
                 sh[i].GetComponent<SpriteRenderer>().flipX = sp.flipX;
@@ -51,6 +66,8 @@ public class Player : MonoBehaviour
             //right
             sp.flipX = false;
             pAnimator.SetBool("Run", true);
+
+            isRight = 1;
 
             for (int i = 0; i < sh.Count; i++)
             {
@@ -78,8 +95,15 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        KeyInput();
-        Move();
+        if (!isWall && !isWallJump)
+        {
+            KeyInput();
+            Move();
+        }
+
+        //벽체크
+        isWall = Physics2D.Raycast(wallChk.position, Vector2.right * isRight, wallchkDistance, wLayer);
+        pAnimator.SetBool("Grab", isWall);
 
         if(Input.GetKeyDown(KeyCode.W))
         {
@@ -87,7 +111,26 @@ public class Player : MonoBehaviour
             {
                 Jump();
                 pAnimator.SetBool("Jump", true);
+                JumpDust();
             } 
+        }
+
+        if (isWall)
+        {
+            isWallJump = false;
+            pRig2D.linearVelocity = new Vector2(pRig2D.linearVelocityX, pRig2D.linearVelocityY * slidingSpeed);
+
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                isWallJump = true;
+
+                Invoke("FreezeX", 0.3f);
+
+                pRig2D.linearVelocity = new Vector2(-isRight * wallJumpPower, 0.9f * wallJumpPower);    // 벽 반대방향으로 뛰기 때문에
+                //sp.flipX = sp.flipX == false ? true : false;
+                sp.flipX = !sp.flipX;
+                isRight = -isRight;
+            }
         }
     }
 
@@ -148,5 +191,27 @@ public class Player : MonoBehaviour
             go.GetComponent<Shadow>().TwSpeed = 10 - sh.Count;
             sh.Add(go);
         }
+    }
+
+    //흙먼지
+    public void RandDust(GameObject dust)
+    {
+        Instantiate(dust, transform.position + new Vector3(-0.15f, -0.3f, 0), Quaternion.identity);
+    }
+
+    public void JumpDust()
+    {
+        Instantiate(jumpDust, transform.position, Quaternion.identity);
+    }
+
+    public void FreezeX()
+    {
+        isWallJump = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawRay(wallChk.position, Vector2.right * isRight * wallchkDistance);
     }
 }
