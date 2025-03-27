@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     public Vector3 direction;
     public GameObject slash;
     public GameObject jumpDust;
-    
+    public GameObject wallDust;
+
     //벽점프
     public Transform wallChk;
     public float wallchkDistance;
@@ -107,12 +108,12 @@ public class Player : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.W))
         {
-            if(pAnimator.GetBool("Jump")==false)
+            if (pAnimator.GetBool("Jump") == false)
             {
                 Jump();
                 pAnimator.SetBool("Jump", true);
                 JumpDust();
-            } 
+            }
         }
 
         if (isWall)
@@ -124,12 +125,17 @@ public class Player : MonoBehaviour
             {
                 isWallJump = true;
 
+                GameObject go = Instantiate(wallDust, transform.position + new Vector3(0.8f * isRight, 0, 0), Quaternion.identity);
+                go.GetComponent<SpriteRenderer>().flipX = sp.flipX;
+
                 Invoke("FreezeX", 0.3f);
 
                 pRig2D.linearVelocity = new Vector2(-isRight * wallJumpPower, 0.9f * wallJumpPower);    // 벽 반대방향으로 뛰기 때문에
                 //sp.flipX = sp.flipX == false ? true : false;
                 sp.flipX = !sp.flipX;
                 isRight = -isRight;
+
+                //JumpDust();
             }
         }
     }
@@ -143,11 +149,22 @@ public class Player : MonoBehaviour
 
         if(pRig2D.linearVelocityY < 0)
         {
-            if(rayHit.collider != null)
+            if (rayHit.collider != null)
             {
-                if(rayHit.distance <0.7f)
+                if (rayHit.distance < 0.7f)
                 {
                     pAnimator.SetBool("Jump", false);
+                }
+            }
+            else
+            {
+                if (!isWall)
+                {
+                    pAnimator.SetBool("Jump", true);
+                }
+                else
+                {
+                    pAnimator.SetBool("Grab", true);
                 }
             }
         }
@@ -201,7 +218,10 @@ public class Player : MonoBehaviour
 
     public void JumpDust()
     {
-        Instantiate(jumpDust, transform.position, Quaternion.identity);
+        if (!isWall)
+            Instantiate(jumpDust, transform.position, Quaternion.identity);
+        else
+            Instantiate(wallDust, transform.position, Quaternion.identity);
     }
 
     public void FreezeX()
