@@ -1,3 +1,4 @@
+using TreeEditor;
 using UnityEngine;
 
 public class ShootingEnemy : MonoBehaviour
@@ -46,6 +47,7 @@ public class ShootingEnemy : MonoBehaviour
 
         Vector2 direction = (player.position - firePoint.position).normalized;
         missile.GetComponent<EnemyMissile>().SetDirection(direction);
+        missile.GetComponent<SpriteRenderer>().flipX = (player.position.x < transform.position.x);
     }
 
     //디버깅용
