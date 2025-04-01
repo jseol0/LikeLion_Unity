@@ -89,14 +89,7 @@ AnimationClip:
   - time: 0
     functionName: RandDust
     data: 
-    objectReferenceParameter: {fileID: 8172874499898663564, guid: 53a5d56e248f9f2458d31a713a9f75f7, type: 3}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.083333336
-    functionName: RunShadow
-    data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 7544509527898579347, guid: 56905b9ca70cc2a4e9110ccb65c03ccb, type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

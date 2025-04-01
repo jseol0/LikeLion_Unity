@@ -9,10 +9,13 @@ public class Shadow : MonoBehaviour
         
     }
 
+    
     void Update()
     {
         player = GameObject.FindGameObjectWithTag("Player");
 
         transform.position = Vector3.Lerp(transform.position, player.transform.position, TwSpeed * Time.deltaTime);
+
+
     }
 }
