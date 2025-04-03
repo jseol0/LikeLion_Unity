@@ -21,6 +21,20 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask whatIsGround;
     private bool isGrounded;
 
+    [Header("Dash info")]
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashDuration;
+    [SerializeField] private float dashCooldown;
+    private float dashTime;
+    private float dashCooldownTimer;
+
+    [Header("Attack info")]
+    private bool isAttacking;
+    private int comboCounter;
+    [SerializeField] private float comboTime = 0.3f;
+    private float comboTimeCounter;
+    
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -32,6 +46,10 @@ public class Player : MonoBehaviour
         CheckInput();
         Movement();
         CheckCollision();
+
+        dashTime -= Time.deltaTime;
+        dashCooldownTimer -= Time.deltaTime;
+        comboTimeCounter -= Time.deltaTime;
 
         FlipController();
         AnimatorControllers();
@@ -46,13 +64,55 @@ public class Player : MonoBehaviour
     {
         xInput = Input.GetAxisRaw("Horizontal");
 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            Attack();
+        }
+
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            DashAbility();
+        }
     }
 
-    private void Movement()
+    private void AnimatorControllers()
     {
-        rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocityY);
+        bool isMoving = rb.linearVelocity.x != 0;
+
+        anim.SetFloat("yVelocity", rb.linearVelocityY);
+
+        anim.SetBool("isMoving", isMoving);
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetBool("isDash", dashTime > 0);
+        anim.SetBool("isAttacking", isAttacking);
+        anim.SetInteger("comboCounter", comboCounter);
+    }
+
+    private void Attack()
+    {
+        if (comboTimeCounter < 0)
+            comboCounter = 0;
+
+        isAttacking = true;
+        comboTimeCounter = comboTime;
+    }
+
+    public void AttackOver()
+    {
+        //if (!isGrounded)
+        //    return;
+
+        isAttacking = false;
+
+        comboCounter++;
+
+        if (comboCounter > 2)
+            comboCounter = 0;
+
+
     }
 
     private void Jump()
@@ -61,11 +121,31 @@ public class Player : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
     }
 
-    private void AnimatorControllers()
-    { 
-        bool isMoving = rb.linearVelocity.x != 0;
+    private void DashAbility()
+    {
+        AttackOver();
 
-        anim.SetBool("isMoving", isMoving);
+        if (dashCooldownTimer < 0)
+        {
+            dashTime = dashDuration;
+            dashCooldownTimer = dashCooldown;
+        }
+    }
+
+    private void Movement()
+    {
+        if (isAttacking)
+        {
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+        }
+        else if (dashTime > 0)
+        {
+            rb.linearVelocity = new Vector2(facingDir * dashSpeed, 0);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocity.y);
+        }
     }
 
     private void Flip()
