@@ -29,9 +29,9 @@ public class Player : MonoBehaviour
     private float dashCooldownTimer;
 
     [Header("Attack info")]
+    [SerializeField] private float comboTime = 0.3f;
     private bool isAttacking;
     private int comboCounter;
-    [SerializeField] private float comboTime = 0.3f;
     private float comboTimeCounter;
     
 
@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
     {
         xInput = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && isGrounded)
         {
             Attack();
         }
@@ -111,8 +111,6 @@ public class Player : MonoBehaviour
 
         if (comboCounter > 2)
             comboCounter = 0;
-
-
     }
 
     private void Jump()
