@@ -2,24 +2,13 @@ using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class Player : MonoBehaviour
+public class Player : Entity
 {
-    [SerializeField]
-    private float jumpForce;
-    [SerializeField]
-    private float moveSpeed;
-
-    private Rigidbody2D rb;
-    private Animator anim;
+    [Header("Move info")]
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float moveSpeed;
 
     private float xInput;
-    private int facingDir = 1;
-    private bool facingRight = true;
-
-    [Header("Collision info")]
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private LayerMask whatIsGround;
-    private bool isGrounded;
 
     [Header("Dash info")]
     [SerializeField] private float dashSpeed;
@@ -34,18 +23,16 @@ public class Player : MonoBehaviour
     private int comboCounter;
     private float comboTimeCounter;
     
-
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponentInChildren<Animator>();
+        base.Start();
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         CheckInput();
         Movement();
-        CheckCollision();
 
         dashTime -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
@@ -53,11 +40,6 @@ public class Player : MonoBehaviour
 
         FlipController();
         AnimatorControllers();
-    }
-
-    private void CheckCollision()
-    {
-        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, groundCheckDistance, whatIsGround);
     }
 
     private void CheckInput()
@@ -144,27 +126,5 @@ public class Player : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(xInput * moveSpeed, rb.linearVelocity.y);
         }
-    }
-
-    private void Flip()
-    { 
-        facingDir *= -1;
-        facingRight = !facingRight;
-
-        transform.Rotate(0f, 180f, 0f);
-    }
-
-    private void FlipController()
-    {
-        if (rb.linearVelocityX > 0 && !facingRight)
-            Flip();
-        else if (rb.linearVelocityX < 0 && facingRight)
-            Flip();
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundCheckDistance));
     }
 }
