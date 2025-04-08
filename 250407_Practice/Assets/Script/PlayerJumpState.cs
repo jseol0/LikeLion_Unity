@@ -8,11 +8,7 @@ public class PlayerJumpState : PlayerState
 
     public override void Enter()
     {
-        Debug.Log("Jump State Entered");
         base.Enter();
-
-        if (player.IsWallDetected())
-            rb.linearVelocity = new Vector2(-player.facingDir * player.jumpForce, player.jumpForce);
 
         rb.linearVelocity = new Vector2(rb.linearVelocityX, player.jumpForce);
     }
@@ -28,8 +24,5 @@ public class PlayerJumpState : PlayerState
 
         if (rb.linearVelocityY < 0)
             stateMachine.ChangeState(player.airState);
-
-        if (player.IsWallDetected())
-            stateMachine.ChangeState(player.wallSlideState);
     }
 }

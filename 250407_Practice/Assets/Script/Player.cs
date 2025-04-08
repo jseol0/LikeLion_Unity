@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     public PlayerAirState airState { get; private set; }
     public PlayerDashState dashState { get; private set; }
     public PlayerWallSlideState wallSlideState { get; private set; }
+    public PlayerWallJumpState wallJumpState { get; private set; }
     #endregion
 
     private void Awake()
@@ -44,6 +45,7 @@ public class Player : MonoBehaviour
         airState = new PlayerAirState(this, stateMachine, "Jump");
         dashState = new PlayerDashState(this, stateMachine, "Dash");
         wallSlideState = new PlayerWallSlideState(this, stateMachine, "WallSlide");
+        wallJumpState = new PlayerWallJumpState(this, stateMachine, "Jump");
     }
 
     private void Start()
@@ -53,6 +55,13 @@ public class Player : MonoBehaviour
 
         stateMachine.Initialize(idleState);
     }
+
+    private void Update()
+    {
+        stateMachine.currentState.Update();
+    }
+
+    public void ZeroVelocity() => rb.linearVelocity = new Vector2(0f, 0f);
 
     public void SetVelocity(float _xVelocity, float _yVelocity)
     { 
@@ -80,8 +89,12 @@ public class Player : MonoBehaviour
             Flip();
     }
 
-    private void Update()
+    private void OnDrawGizmos()
     {
-        stateMachine.currentState.Update();
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(groundCheck.position,
+            new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
+        Gizmos.DrawLine(wallCheck.position,
+            new Vector3(wallCheck.position.x + wallCheckDistance, wallCheck.position.y));
     }
 }

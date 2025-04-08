@@ -8,11 +8,8 @@ public class PlayerWallSlideState : PlayerState
 
     public override void Enter()
     {
-        Debug.Log("Wall Slide State Entered");
         base.Enter();
 
-        //rb.linearVelocity = new Vector2(rb.linearVelocityX, rb.linearVelocityY * player.slideSpeed);
-        rb.linearVelocity = new Vector2(rb.linearVelocityX, -player.slideSpeed);
     }
 
     public override void Exit()
@@ -24,10 +21,21 @@ public class PlayerWallSlideState : PlayerState
     {
         base.Update();
 
-        if (Input.GetKeyDown(KeyCode.Space))
-            stateMachine.ChangeState(player.jumpState);
+        if (yInput < 0)
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocityY);
+        else
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocityY * 0.7f);
 
         if (player.IsGroundDetected())
             stateMachine.ChangeState(player.idleState);
+
+        if (xInput != 0 && player.facingDir != xInput)
+            stateMachine.ChangeState(player.idleState);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        { 
+            stateMachine.ChangeState(player.wallJumpState);
+            return;
+        }
     }
 }
