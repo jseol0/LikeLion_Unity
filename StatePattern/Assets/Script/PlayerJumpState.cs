@@ -15,7 +15,7 @@ public class PlayerJumpState : PlayerState
 
     public override void Update()
     {
-        base.Update();
+        base.Update(); 
 
         if (rb.linearVelocityY < 0)
             stateMachine.ChangeState(player.airState);
