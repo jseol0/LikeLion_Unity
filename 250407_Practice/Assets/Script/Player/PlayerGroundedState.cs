@@ -9,6 +9,8 @@ public class PlayerGroundedState : PlayerState
     public override void Enter()
     {
         base.Enter();
+
+        player.dubleJump = false;
     }
 
     public override void Exit()

@@ -22,6 +22,12 @@ public class PlayerJumpState : PlayerState
     {
         base.Update();
 
+        if (Input.GetKeyDown(KeyCode.Space) && !player.dubleJump)
+        {
+            player.dubleJump = true;
+            stateMachine.ChangeState(player.jumpState);
+        }
+
         if (rb.linearVelocityY < 0)
             stateMachine.ChangeState(player.airState);
     }

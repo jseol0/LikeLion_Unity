@@ -20,13 +20,14 @@ public class PlayerAirState : PlayerState
     {
         base.Update();
 
-        if (player.IsWallDetected())
-        { 
-            stateMachine.ChangeState(player.wallSlideState);
-            Debug.Log("Wall Slide");
+        if (Input.GetKeyDown(KeyCode.Space) && !player.dubleJump)
+        {
+            player.dubleJump = true;
+            stateMachine.ChangeState(player.jumpState);
         }
-        else
-            Debug.Log("Cant find Wall");
+
+        if (player.IsWallDetected())
+            stateMachine.ChangeState(player.wallSlideState);
 
         if (player.IsGroundDetected())
             stateMachine.ChangeState(player.idleState);

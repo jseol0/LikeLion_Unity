@@ -27,11 +27,15 @@ public class PlayerWallSlideState : PlayerState
         if (player.IsGroundDetected())
             stateMachine.ChangeState(player.idleState);
 
-        if (Input.GetKeyDown(KeyCode.Space)) {
+        if (!player.IsWallDetected())
+            stateMachine.ChangeState(player.idleState);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             stateMachine.ChangeState(player.wallJumpState);
             return;
         }
-        
+
     }
 
     public override void Exit()
