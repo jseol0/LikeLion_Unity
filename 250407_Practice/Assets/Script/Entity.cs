@@ -3,11 +3,11 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     [Header("Collision info")]
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float groundCheckDistance;
-    [SerializeField] private Transform wallCheck;
-    [SerializeField] private float wallCheckDistance;
-    [SerializeField] private LayerMask wahtIsGround;
+    [SerializeField] protected Transform groundCheck;
+    [SerializeField] protected float groundCheckDistance;
+    [SerializeField] protected Transform wallCheck;
+    [SerializeField] protected float wallCheckDistance;
+    [SerializeField] protected LayerMask wahtIsGround;
 
     public int facingDir { get; private set; } = 1;
     public bool facingRight = true;
