@@ -1,7 +1,12 @@
+using System.Collections;
 using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    [Header("Attack info")]
+    public Transform attackCheck;
+    public float attackCheckRadius;
+
     [Header("Collision info")]
     [SerializeField] protected Transform groundCheck;
     [SerializeField] protected float groundCheckDistance;
@@ -9,12 +14,18 @@ public class Entity : MonoBehaviour
     [SerializeField] protected float wallCheckDistance;
     [SerializeField] protected LayerMask whatIsGround;
 
+    [Header("Knonkback info")]
+    [SerializeField] protected Vector2 knonkbackDirection;
+    [SerializeField] protected float knockbackDuration;
+    protected bool isKnocked;
+
     public int facingDir { get; private set; } = 1;
     protected bool facingRight = true;
 
     #region Components
     public Animator anim { get; private set; }
     public Rigidbody2D rb { get; private set; }
+    public EnityFX fx { get; private set; }
     #endregion
 
     protected virtual void Awake()
@@ -25,10 +36,29 @@ public class Entity : MonoBehaviour
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        fx = GetComponent<EnityFX>();
     }
 
     protected virtual void Update()
     {
+    }
+
+    public virtual void Damage()
+    {
+        fx.StartCoroutine("FlashFX");
+        StartCoroutine(HitKnockBack());
+    }
+
+    protected virtual IEnumerator HitKnockBack()
+    {
+        isKnocked = true;
+
+        rb.linearVelocity = new Vector2(knonkbackDirection.x * -facingDir, knonkbackDirection.y);
+
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnocked = false;
+        SetZeroVelocity();
     }
 
     #region Collosion Methods
@@ -41,6 +71,8 @@ public class Entity : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(groundCheck.position, new Vector3(groundCheck.position.x, groundCheck.position.y - groundCheckDistance));
         Gizmos.DrawLine(wallCheck.position, new Vector3(wallCheck.position.x + wallCheckDistance * facingDir, wallCheck.position.y));
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(attackCheck.position, attackCheckRadius);
     }
     #endregion
 
@@ -63,10 +95,19 @@ public class Entity : MonoBehaviour
     #endregion
 
     #region Velocity Methods
-    public void SetZeroVelocity() => rb.linearVelocity = new Vector2(0, 0);
+    public void SetZeroVelocity()
+    {
+        if (isKnocked)
+            return;
+
+        rb.linearVelocity = new Vector2(0, 0);
+    }
 
     public void SetVelocity(float _xVelocity, float _yVellocity)
     {
+        if (isKnocked)
+            return;
+
         rb.linearVelocity = new Vector2(_xVelocity, _yVellocity);
         FlipController(_xVelocity);
     }

@@ -11,12 +11,12 @@ public class PlayerState
     protected float yInput;
     private string animBoolName;
 
-    protected bool trrigerCalled;
+    protected bool triggerCalled;
 
     protected float stateTimer;
 
     public PlayerState(Player _player, PlayerStateMachine _stateMachine, string _animBoolName)
-    { 
+    {
         this.player = _player;
         this.stateMachine = _stateMachine;
         this.animBoolName = _animBoolName;
@@ -26,7 +26,7 @@ public class PlayerState
     {
         player.anim.SetBool(animBoolName, true);
         rb = player.rb;
-        trrigerCalled = false;
+        triggerCalled = false;
     }
 
     public virtual void Update()
@@ -45,6 +45,6 @@ public class PlayerState
 
     public virtual void AnimationFinishTrigger()
     {
-        trrigerCalled = true;
+        triggerCalled = true;
     }
 }
