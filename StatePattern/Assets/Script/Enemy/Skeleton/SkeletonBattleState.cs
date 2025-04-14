@@ -15,25 +15,12 @@ public class SkeletonBattleState : EnemyState
     {
         base.Enter();
 
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        //player = enemy.IsPlayerDetected().collider.transform;
+        player = PlayerManager.instance.player.transform;
     }
 
     public override void Update()
     {
         base.Update();
-
-        /*
-        if (enemy.IsPlayerDetected())
-        {
-            if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
-            {
-                if (CanAttack())
-                    stateMachine.ChangeState(enemy.attackState);
-                return;
-            }
-        }
-        */
 
         RaycastHit2D hit = enemy.IsPlayerDetected();
         if (hit)
