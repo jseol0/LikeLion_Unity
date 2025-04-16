@@ -19,7 +19,11 @@ public class Player : Entity
 
     public bool isBusy { get; private set; }
 
+    public float swordReturnImpact;
+
     public SkillManager skill;
+
+    public GameObject sword { get; private set; }
 
     #region States
     public PlayerStateMachine stateMachine { get; private set; }
@@ -69,6 +73,17 @@ public class Player : Entity
 
         stateMachine.currentState.Update();
         CheckForDashInput();
+    }
+
+    public void AssignNewSword(GameObject _newSword)
+    {
+        sword = _newSword;
+    }
+
+    public void ClearTheSword()
+    {
+        stateMachine.ChangeState(catchSwordState);
+        Destroy(sword);
     }
 
     public IEnumerator BusyFor(float _seconds)
