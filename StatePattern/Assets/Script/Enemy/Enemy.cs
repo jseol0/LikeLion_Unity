@@ -44,7 +44,7 @@ public class Enemy : Entity
         stateMachine.currentState.Update();
     }
 
-    public virtual void FreezeTimer(bool _timeFrozen)
+    public virtual void FreezeTime(bool _timeFrozen)
     {
         if (_timeFrozen)
         {
@@ -60,11 +60,11 @@ public class Enemy : Entity
 
     protected virtual IEnumerator FreezeTimerFor(float _seconds)
     {
-        FreezeTimer(true);
+        FreezeTime(true);
 
         yield return new WaitForSeconds(_seconds);
 
-        FreezeTimer(false);
+        FreezeTime(false);
 
     }
 
