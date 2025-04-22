@@ -21,6 +21,8 @@ public class Skill : MonoBehaviour
     {
         if (cooldownTimer < 0)
         {
+            UseSkill();
+
             cooldownTimer = cooldown;
             return true;
         }
@@ -30,5 +32,28 @@ public class Skill : MonoBehaviour
 
     public virtual void UseSkill()
     {
+    }
+
+    protected virtual Transform FindClosestEnemy(Transform _checkTransform)
+    {
+        Transform closestEnemy = null;
+
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(_checkTransform.position, 25);
+
+        float closestDistance = Mathf.Infinity;
+
+        foreach (var hit in colliders)
+        {
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                float distance = Vector2.Distance(_checkTransform.position, hit.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestEnemy = hit.transform;
+                }
+            }
+        }
+        return closestEnemy;
     }
 }
