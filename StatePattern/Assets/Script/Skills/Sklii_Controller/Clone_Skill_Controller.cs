@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class Clone_Skill_Controller : MonoBehaviour
@@ -9,6 +11,11 @@ public class Clone_Skill_Controller : MonoBehaviour
 
     [SerializeField] private Transform attackCheck;
     [SerializeField] private float attackCheckRadius = 1.0f;
+    private Transform closestEnemy;
+    private bool canDuplicateClone;
+    private int facingDir = 1;
+
+    private float chanceToDuplicate;
 
     private void Awake()
     {
@@ -28,14 +35,16 @@ public class Clone_Skill_Controller : MonoBehaviour
         }
     }
 
-    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestNemy)
+    public void SetupClone(Transform _newTransform, float _cloneDuration, bool _canAttack, Vector3 _offset, Transform _closestEnemy, bool _canDuplicate, float _chanceToDuplicate)
     {
         if (_canAttack)
             anim.SetInteger("AttackNumber", Random.Range(1, 4));
 
         transform.position = _newTransform.position + _offset;
         cloneTimer = _cloneDuration;
-        closestEnemy = _closestNemy;
+        closestEnemy = _closestEnemy;
+        canDuplicateClone = _canDuplicate;
+        chanceToDuplicate = _chanceToDuplicate;
 
         FaceClosestTarget();
     }
@@ -52,18 +61,30 @@ public class Clone_Skill_Controller : MonoBehaviour
         foreach (var hit in colliders)
         {
             if (hit.GetComponent<Enemy>() != null)
-                hit.GetComponent<Enemy>().Damage();
+            {
+                hit.GetComponent<Enemy>().DamageEffect();
+
+                if (canDuplicateClone)
+                {
+                    if (Random.Range(0, 100) < 99)
+                    {
+                        SkillManager.instance.clone.CreateClone(hit.transform, new Vector3(1f * facingDir, 0));
+                    }
+                }
+            }
+
         }
     }
-
-    private Transform closestEnemy;
 
     private void FaceClosestTarget()
     {
         if (closestEnemy != null)
         {
             if (transform.position.x > closestEnemy.position.x)
+            {
+                facingDir = -1;
                 transform.Rotate(0, 180, 0);
+            }
         }
     }
 }

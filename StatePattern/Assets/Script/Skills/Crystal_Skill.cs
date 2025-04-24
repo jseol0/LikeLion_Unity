@@ -8,6 +8,8 @@ public class Crystal_Skill : Skill
     [SerializeField] private float crystalDuration;
     private GameObject currentCrystal;
 
+    [SerializeField] private bool cloneInstaedOfCrystal;
+
     [Header("Explosive srystal")]
     [SerializeField] private bool canExplode;
 
@@ -48,7 +50,11 @@ public class Crystal_Skill : Skill
             player.transform.position = currentCrystal.transform.position;
 
             currentCrystal.transform.position = playerPos;
-            currentCrystal.GetComponent<Crystal_Skill_Controller>()?.FinishCrystal();
+
+            if (cloneInstaedOfCrystal)
+                SkillManager.instance.clone.CreateClone(currentCrystal.transform, Vector3.zero);
+            else
+                currentCrystal.GetComponent<Crystal_Skill_Controller>()?.FinishCrystal();
         }
     }
 
