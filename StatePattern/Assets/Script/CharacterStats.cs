@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class CharacterStats : MonoBehaviour
 {
-    public Stat strenght;
+    public Stat strength;
     public Stat health;
     public Stat maxHealth;
     public Stat damage;
@@ -44,7 +44,7 @@ public class CharacterStats : MonoBehaviour
         if (CanAvoidAttack(_targetStats))
             return;
 
-        int totalDamage = damage.GetValue() + strenght.GetValue();
+        int totalDamage = damage.GetValue() + strength.GetValue();
 
         if (CanCrit())
             totalDamage = CalculateCriticalDamage(totalDamage);
@@ -166,7 +166,7 @@ public class CharacterStats : MonoBehaviour
 
     private int CalculateCriticalDamage(int _damage)
     {
-        float totalcirtPower = (critPower.GetValue() + strenght.GetValue()) * 0.01f;
+        float totalcirtPower = (critPower.GetValue() + strength.GetValue()) * 0.01f;
         float critDamage = _damage * totalcirtPower;
 
         return Mathf.RoundToInt(critDamage);

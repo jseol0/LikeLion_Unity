@@ -52,7 +52,6 @@ public class Blackhole_Skill_Controller : MonoBehaviour
             if (transform.localScale.x < 0)
                 Destroy(gameObject);
         }
-
     }
 
     private void ReleaseCloneAttack()
