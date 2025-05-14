@@ -8,7 +8,6 @@ public class Combo : MonoBehaviour
     bool comboPossible;
     bool inputSmash;
     public int comboStep;
-    public int smashComboStep;
 
     void Start()
     {
@@ -29,7 +28,7 @@ public class Combo : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            //방어어
+            playerAnim.Play("ARPG_Samurai_Parry");
         }
     }
 
@@ -42,6 +41,11 @@ public class Combo : MonoBehaviour
     {
         if (!inputSmash)
         {
+            HitStop.Instance.stopTime = 0.1f;
+            HitStop.Instance.timeScaleRecoverySpeed = 5f;
+            HitStop.Instance.shakeFrequency = 0.1f;
+            HitStop.Instance.shakeIntensity = 0.1f;
+
             if (comboStep == 2)
             {
                 playerAnim.Play("ARPG_Samurai_Attack_Combo2");
@@ -58,17 +62,22 @@ public class Combo : MonoBehaviour
 
         if (inputSmash)
         {
-            if (smashComboStep == 2)
+            HitStop.Instance.stopTime = 0.2f;
+            HitStop.Instance.timeScaleRecoverySpeed = 3f;
+            HitStop.Instance.shakeFrequency = 0.3f;
+            HitStop.Instance.shakeIntensity = 0.3f;
+
+            if (comboStep == 2)
             {
-                playerAnim.Play("ARPG_Samurai_Attack_Heavy2");
+                playerAnim.Play("ARPG_Samurai_Attack_Sprint");
             }
             if (comboStep == 3)
             {
-                //playerAnim.Play("");
+                playerAnim.Play("ARPG_Samurai_Attack_Heavy2");
             }
             if (comboStep == 4)
             {
-                //playerAnim.Play("");
+                playerAnim.Play("ARPG_Samurai_Attack_Heavy1_Start");
             }
         }
     }
@@ -76,7 +85,6 @@ public class Combo : MonoBehaviour
     public void ResetCombo()
     {
         comboStep = 0;
-        smashComboStep = 0;
         comboPossible = false;
         inputSmash = false;
     }
@@ -100,35 +108,35 @@ public class Combo : MonoBehaviour
         }
     }
 
-    // void SmashAttack()
-    // {
-    //     if (comboPossible)
-    //     {
-    //         comboPossible = false;
-    //         inputSmash = true;
-    //     }
-    // }
-
     void SmashAttack()
     {
-        if (smashComboStep == 0)
+        if (comboPossible)
         {
-            playerAnim.Play("ARPG_Samurai_Attack_Heavy1_Start");
-            smashComboStep = 1;
+            comboPossible = false;
             inputSmash = true;
-            return;
-        }
-
-        if (smashComboStep != 0)
-        {
-            if (comboPossible)
-            {
-                smashComboStep++;
-                comboPossible = false;
-                inputSmash = true;
-            }
         }
     }
+
+    // void SmashAttack()
+    // {
+    //     if (smashComboStep == 0)
+    //     {
+    //         playerAnim.Play("ARPG_Samurai_Attack_Heavy1_Start");
+    //         smashComboStep = 1;
+    //         inputSmash = true;
+    //         return;
+    //     }
+
+    //     if (smashComboStep != 0)
+    //     {
+    //         if (comboPossible)
+    //         {
+    //             smashComboStep++;
+    //             comboPossible = false;
+    //             inputSmash = true;
+    //         }
+    //     }
+    // }
 
     void ChangeTag(string tag)
     {
