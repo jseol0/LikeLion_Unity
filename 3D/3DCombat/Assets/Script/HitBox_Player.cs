@@ -10,6 +10,7 @@ public class HitBox_Player : MonoBehaviour
     {
         if(other.CompareTag("Col_EnemyAttack"))
         {
+            Debug.Log("타격받음");
             if(gameObject.CompareTag("HitBox_Player"))
             {
                 //데미지입은 애니메이션
