@@ -1,107 +1,107 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
+public enum AttackState { Idle, Windup, Impact, Cooldown }
 
-public enum AttackState { Idle, Windup, Impact,Cooldown}
-
-// 근접 전투를 담당하는 클래스
 public class MeeleFighter : MonoBehaviour
 {
+    [SerializeField] List<AttackData> attacks;
     [SerializeField] GameObject sword;
 
     BoxCollider swordCollider;
 
-    // 애니메이터 컴포넌트 참조
-    Animator animator;
-    // 현재 공격 동작 중인지 확인하는 플래그
-    public bool inAction { get; private set; } = false;
-
     public AttackState attackState;
+    bool doCombo;
+    int comboCount = 0;
+
+    Animator animator;
+    public bool inAction { get; private set; } = false;
 
     private void Awake()
     {
-        // 애니메이터 컴포넌트 가져오기
         animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
-        if(sword != null)
+        if (sword != null)
         {
             swordCollider = sword.GetComponent<BoxCollider>();
             swordCollider.enabled = false;
         }
     }
 
-    // 공격 시도 함수
     public void TryToAttack()
     {
-        // 현재 공격 중이 아닐 때만 새로운 공격 시작
-        if(!inAction)
+        if (!inAction)
         {
             StartCoroutine(Attack());
         }
+        else if (attackState == AttackState.Impact || attackState == AttackState.Cooldown)
+        {
+            doCombo = true;
+        }
     }
 
-    // 공격 동작을 처리하는 코루틴
     IEnumerator Attack()
     {
-        // 공격 상태 설정
         inAction = true;
         attackState = AttackState.Windup;
 
-        float impactStartTime = 0.33f;
-        float impatEndTime = 0.55f;
+        animator.CrossFade(attacks[comboCount].animName, 0.2f);
+        yield return null;
 
-
-        // Slash 애니메이션으로 부드럽게 전환 (0.2초 동안)
-        animator.CrossFade("Slash", 0.2f);
-        yield return null; //1프레임 null로넘어가기
-
-        // 다음 애니메이션 상태 정보 가져오기
         var animState = animator.GetNextAnimatorStateInfo(1);
 
         float timer = 0f;
 
-        while(timer <= animState.length)
+        while (timer <= animState.length)
         {
             timer += Time.deltaTime;
 
             float normalizedTime = timer / animState.length;
 
-            if(attackState == AttackState.Windup)
+            if (attackState == AttackState.Windup)
             {
-                if(normalizedTime >= impactStartTime)
+                if (normalizedTime >= attacks[comboCount].impactStartTime)
                 {
                     attackState = AttackState.Impact;
-                    //콜라이더 키고
                     swordCollider.enabled = true;
                 }
             }
-            else if(attackState == AttackState.Impact)
+            else if (attackState == AttackState.Impact)
             {
-                if(normalizedTime >= impatEndTime)
+                if (normalizedTime >= attacks[comboCount].impactEndTime)
                 {
                     attackState = AttackState.Cooldown;
-                    //콜라이더 끄기
                     swordCollider.enabled = false;
                 }
             }
-            else if(attackState == AttackState.Cooldown)
+            else if (attackState == AttackState.Cooldown)
             {
-                //콤보
+                if (doCombo)
+                {
+                    doCombo = false;
+
+                    comboCount = (comboCount + 1) % attacks.Count;
+
+                    StartCoroutine(Attack());
+                    yield break;
+                }
             }
-                yield return null;
+
+            yield return null;
         }
+
         attackState = AttackState.Idle;
-        // 공격 상태 해제
+        comboCount = 0;
         inAction = false;
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Hitbox") && !inAction)
+        if (other.CompareTag("Hitbox") && !inAction)
         {
             StartCoroutine(PlayHitReaction());
         }
@@ -109,19 +109,14 @@ public class MeeleFighter : MonoBehaviour
 
     IEnumerator PlayHitReaction()
     {
-        // 공격 상태 설정
         inAction = true;
-        // Slash 애니메이션으로 부드럽게 전환 (0.2초 동안)
         animator.CrossFade("SwordImpact", 0.2f);
-        yield return null; //1프레임 null로넘어가기
+        yield return null;
 
-        // 다음 애니메이션 상태 정보 가져오기
         var animState = animator.GetNextAnimatorStateInfo(1);
 
-        // 애니메이션이 끝날 때까지 대기
-        yield return new WaitForSeconds(animState.length);
+        yield return new WaitForSeconds(animState.length * 0.8f);
 
-        // 공격 상태 해제
         inAction = false;
     }
 }
