@@ -4,12 +4,12 @@ using UnityEngine;
 public class CombatController : MonoBehaviour
 {
     // 근접 전투 시스템 참조
-    MeeleFighter meeleFighter;
+    MeleeFighter meeleFighter;
 
     private void Awake()
     {
         // 근접 전투 컴포넌트 가져오기
-        meeleFighter = GetComponent<MeeleFighter>();
+        meeleFighter = GetComponent<MeleeFighter>();
     }
 
     private void Update()

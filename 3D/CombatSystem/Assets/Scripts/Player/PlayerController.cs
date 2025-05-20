@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     CameraController cameraController;
     Animator animator;
     CharacterController characterController;
-    MeeleFighter meeleFighter;
+    MeleeFighter meeleFighter;
 
     private void Awake()
     {
@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
         cameraController = Camera.main.GetComponent<CameraController>();
         animator = GetComponent<Animator>();
         characterController = GetComponent<CharacterController>();
-        meeleFighter = GetComponent<MeeleFighter>();
+        meeleFighter = GetComponent<MeleeFighter>();
     }
 
     void Update()

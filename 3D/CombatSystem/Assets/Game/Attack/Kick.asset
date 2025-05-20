@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d62dbd062125d8142b089be5f2e78052, type: 3}
-  m_Name: Slash
+  m_Name: Kick
   m_EditorClassIdentifier: 
-  <animName>k__BackingField: Slash
-  <HitobxToUse>k__BackingField: 4
-  <impactStartTime>k__BackingField: 0.33
+  <animName>k__BackingField: Kick
+  <HitobxToUse>k__BackingField: 3
+  <impactStartTime>k__BackingField: 0.38
   <impactEndTime>k__BackingField: 0.55
