@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d62dbd062125d8142b089be5f2e78052, type: 3}
   m_Name: Slash
   m_EditorClassIdentifier: 
-  <animName>k__BackingField: Slash
-  <HitobxToUse>k__BackingField: 4
-  <impactStartTime>k__BackingField: 0.33
-  <impactEndTime>k__BackingField: 0.55
+  <AnimName>k__BackingField: Slash
+  <HitboxToUse>k__BackingField: 4
+  <ImpactStartTime>k__BackingField: 0.33
+  <ImpactEndTime>k__BackingField: 0.55

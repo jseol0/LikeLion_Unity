@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public enum AttackState { Idle, Windup, Impact,Cooldown}
+public enum AttackState { Idle, Windup, Impact, Cooldown }
 
 // 근접 전투를 담당하는 클래스
 public class MeleeFighter : MonoBehaviour
@@ -12,7 +11,7 @@ public class MeleeFighter : MonoBehaviour
     [SerializeField] GameObject sword;
 
     BoxCollider swordCollider;
-    SphereCollider leftHandCollider,rightHandCollider,leftFootCollider,rightFootCollider;
+    SphereCollider leftHandCollider, rightHandCollider, leftFootCollider, rightFootCollider;
 
     // 애니메이터 컴포넌트 참조
     Animator animator;
@@ -31,12 +30,12 @@ public class MeleeFighter : MonoBehaviour
 
     private void Start()
     {
-        if(sword != null)
+        if (sword != null)
         {
             swordCollider = sword.GetComponent<BoxCollider>();
-            leftHandCollider  = animator.GetBoneTransform(HumanBodyBones.LeftHand).GetComponent<SphereCollider>();
+            leftHandCollider = animator.GetBoneTransform(HumanBodyBones.LeftHand).GetComponent<SphereCollider>();
             rightHandCollider = animator.GetBoneTransform(HumanBodyBones.RightHand).GetComponent<SphereCollider>();
-            leftFootCollider  = animator.GetBoneTransform(HumanBodyBones.LeftFoot).GetComponent<SphereCollider>();
+            leftFootCollider = animator.GetBoneTransform(HumanBodyBones.LeftFoot).GetComponent<SphereCollider>();
             rightFootCollider = animator.GetBoneTransform(HumanBodyBones.RightFoot).GetComponent<SphereCollider>();
 
             DisableAllHitBox();
@@ -48,11 +47,11 @@ public class MeleeFighter : MonoBehaviour
     public void TryToAttack()
     {
         // 현재 공격 중이 아닐 때만 새로운 공격 시작
-        if(!inAction)
+        if (!inAction)
         {
             StartCoroutine(Attack());
         }
-        else if(attackState == AttackState.Impact || attackState == AttackState.Cooldown)
+        else if (attackState == AttackState.Impact || attackState == AttackState.Cooldown)
         {
             doCombo = true;
         }
@@ -74,34 +73,34 @@ public class MeleeFighter : MonoBehaviour
 
         float timer = 0f;
 
-        while(timer <= animState.length)
+        while (timer <= animState.length)
         {
             timer += Time.deltaTime;
 
             float normalizedTime = timer / animState.length;
 
-            if(attackState == AttackState.Windup)
+            if (attackState == AttackState.Windup)
             {
-                if(normalizedTime >= attacks[comboCount].ImpactStartTime)
+                if (normalizedTime >= attacks[comboCount].ImpactStartTime)
                 {
                     attackState = AttackState.Impact;
                     //콜라이더 키고
                     EnableHitBox(attacks[comboCount]);
                 }
             }
-            else if(attackState == AttackState.Impact)
+            else if (attackState == AttackState.Impact)
             {
-                if(normalizedTime >= attacks[comboCount].ImpactEndTime)
+                if (normalizedTime >= attacks[comboCount].ImpactEndTime)
                 {
                     attackState = AttackState.Cooldown;
                     //콜라이더 끄기
                     DisableAllHitBox();
                 }
             }
-            else if(attackState == AttackState.Cooldown)
+            else if (attackState == AttackState.Cooldown)
             {
                 //콤보
-                if(doCombo)
+                if (doCombo)
                 {
                     doCombo = false;
 
@@ -111,8 +110,8 @@ public class MeleeFighter : MonoBehaviour
                     yield break;
                 }
             }
-            
-                yield return null;
+
+            yield return null;
         }
 
         attackState = AttackState.Idle;
@@ -123,7 +122,7 @@ public class MeleeFighter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Hitbox") && !inAction)
+        if (other.CompareTag("Hitbox") && !inAction)
         {
             StartCoroutine(PlayHitReaction());
         }
@@ -141,7 +140,7 @@ public class MeleeFighter : MonoBehaviour
         var animState = animator.GetNextAnimatorStateInfo(1);
 
         // 애니메이션이 끝날 때까지 대기
-        yield return new WaitForSeconds(animState.length *0.8f);
+        yield return new WaitForSeconds(animState.length * 0.8f);
 
         // 공격 상태 해제
         inAction = false;
@@ -149,7 +148,7 @@ public class MeleeFighter : MonoBehaviour
 
     void EnableHitBox(AttackData attack)
     {
-        switch(attack.HitboxToUse)
+        switch (attack.HitboxToUse)
         {
             case AttackHitbox.LeftHand:
                 leftHandCollider.enabled = true;
@@ -171,7 +170,7 @@ public class MeleeFighter : MonoBehaviour
         }
     }
 
-    void DisableAllHitBox()        
+    void DisableAllHitBox()
     {
         swordCollider.enabled = false;
 
