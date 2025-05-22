@@ -18,7 +18,7 @@ public class MeleeFighter : MonoBehaviour
     // 현재 공격 동작 중인지 확인하는 플래그
     public bool inAction { get; private set; } = false;
 
-    public AttackState attackState;
+    public AttackState attackState { get; private set; }
     bool doCombo;
     int comboCount = 0;
 
@@ -172,14 +172,16 @@ public class MeleeFighter : MonoBehaviour
 
     void DisableAllHitBox()
     {
-        swordCollider.enabled = false;
+        if (swordCollider != null)
+            swordCollider.enabled = false;
 
-        leftHandCollider.enabled = false;
-        rightHandCollider.enabled = false;
-        leftFootCollider.enabled = false;
-        rightFootCollider.enabled = false;
+        if (leftHandCollider != null)
+            leftHandCollider.enabled = false;
+        if (rightHandCollider != null)
+            rightHandCollider.enabled = false;
+        if (leftFootCollider != null)
+            leftFootCollider.enabled = false;
+        if (rightFootCollider != null)                    
+            rightFootCollider.enabled = false;
     }
-
-
-
 }
