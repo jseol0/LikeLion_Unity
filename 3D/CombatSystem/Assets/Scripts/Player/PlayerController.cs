@@ -80,8 +80,6 @@ public class PlayerController : MonoBehaviour
         // 이동 입력이 있을 때만 처리
         if (moveAmount > 0)
         {
-          
-            
             // 이동 방향으로 회전 목표 설정
             targetRotation = Quaternion.LookRotation(moveDir);
         }

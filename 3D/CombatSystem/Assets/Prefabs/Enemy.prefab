@@ -1070,6 +1070,7 @@ GameObject:
   - component: {fileID: 8279518475576361747}
   - component: {fileID: 1312526884228508702}
   - component: {fileID: 6965157964888080787}
+  - component: {fileID: 5282271128808534334}
   - component: {fileID: 46277453524875717}
   - component: {fileID: 1469688567260682296}
   m_Layer: 8
@@ -1137,6 +1138,7 @@ MonoBehaviour:
   attacks:
   - {fileID: 11400000, guid: 3e05524fd51f2bb428ab15c17aa397dd, type: 2}
   - {fileID: 11400000, guid: 1fe82bab58289dd46ac5fcea10523dd3, type: 2}
+  - {fileID: 11400000, guid: f588763287556f142ab98541c4c624fa, type: 2}
   sword: {fileID: 7474722147031000140, guid: c4f4451380439da468b0f379ffc58f9b, type: 3}
 --- !u!114 &1516305200480217271
 MonoBehaviour:
@@ -1193,6 +1195,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDistance: 1
+--- !u!114 &5282271128808534334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172629238692072014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d52317c8cf41ab24bacc7e3e9cc9e354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backwardWalkSpeed: 1.5
+  distanceToRetreat: 3
 --- !u!195 &46277453524875717
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3099,6 +3115,10 @@ PrefabInstance:
     - target: {fileID: 7474722147031000140, guid: c4f4451380439da468b0f379ffc58f9b, type: 3}
       propertyPath: m_Name
       value: LongSwordMesh
+      objectReference: {fileID: 0}
+    - target: {fileID: 7474722147031000140, guid: c4f4451380439da468b0f379ffc58f9b, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7905888767688305252, guid: c4f4451380439da468b0f379ffc58f9b, type: 3}
       propertyPath: m_LocalPosition.x

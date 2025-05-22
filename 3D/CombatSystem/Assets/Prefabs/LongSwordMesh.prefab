@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 389188126635881023}
   m_Layer: 8
   m_Name: LongSwordMesh
-  m_TagString: Untagged
+  m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

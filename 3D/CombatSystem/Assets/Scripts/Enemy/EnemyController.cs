@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public enum EnemyStates {  Idle, CombatMovement, Attack }
+public enum EnemyStates {  Idle, CombatMovement, Attack , RetreatAfterAttack}
 
 public class EnemyController : MonoBehaviour
 {
@@ -32,6 +32,7 @@ public class EnemyController : MonoBehaviour
         stateDict[EnemyStates.Idle] = GetComponent<IdleState>();
         stateDict[EnemyStates.CombatMovement] = GetComponent<CombatMovementState>();
         stateDict[EnemyStates.Attack] = GetComponent<EnemyAttackState>();
+        stateDict[EnemyStates.RetreatAfterAttack] = GetComponent<RetreatAfterAttackState>();
 
         StateMachine = new StateMachine<EnemyController>(this);
         StateMachine.ChangeState(stateDict[EnemyStates.Idle]);

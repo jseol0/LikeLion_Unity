@@ -181,7 +181,9 @@ public class MeleeFighter : MonoBehaviour
             rightHandCollider.enabled = false;
         if (leftFootCollider != null)
             leftFootCollider.enabled = false;
-        if (rightFootCollider != null)                    
+        if (rightFootCollider != null)
             rightFootCollider.enabled = false;
     }
+
+    public List<AttackData> Attacks => attacks;
 }

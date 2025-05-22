@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal.Internal;
 
 public enum AICombatStates {  Idle, Chase, Circling}
 
@@ -22,6 +23,7 @@ public class CombatMovementState : State<EnemyController>
         enemy = owner;
 
         enemy.NavAgent.stoppingDistance = distanceToStand;
+        enemy.combatMovementTimer = 0f;
     }
 
     public override void Execute()
@@ -75,6 +77,8 @@ public class CombatMovementState : State<EnemyController>
 
         if (timer > 0f)
             timer -= Time.deltaTime;
+
+        enemy.combatMovementTimer += Time.deltaTime;
     }
 
     void StartCircleing()
@@ -100,6 +104,6 @@ public class CombatMovementState : State<EnemyController>
 
     public override void Exit()
     {
-        
+        enemy.combatMovementTimer = 0f;
     }
 }
