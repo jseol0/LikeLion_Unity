@@ -1,9 +1,15 @@
 using System.Collections;
 using UnityEngine;
 
-public class HandController : CloseWeaponController
+public class PickaxeController : CloseWeaponController
 {
-    public static bool isActivate = false;
+    public static bool isActivate = true;
+
+    void Start()
+    {
+        WeaponManager.currentWeapon = currentCloseWeapon.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentCloseWeapon.anim;
+    }
 
     void Update()
     {
@@ -17,8 +23,11 @@ public class HandController : CloseWeaponController
         {
             if (CheckObject())
             {
+                if (hitInfo.transform.tag == "Rock")
+                {
+                    hitInfo.transform.GetComponent<Rock>().Mining();
+                }
                 isSwing = false;
-
             }
             yield return null;
         }

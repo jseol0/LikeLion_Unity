@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public class Hand : MonoBehaviour
+public class closeWeapon : MonoBehaviour
 {
-    public string handName;
+    public string closeWeaponName;
+
+    public bool isHand;
+    public bool isAxe;
+    public bool isPickaxe;
+
     public float range;
     public int damage;
     public float workSpeed;
