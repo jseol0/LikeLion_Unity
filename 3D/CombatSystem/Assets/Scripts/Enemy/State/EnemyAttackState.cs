@@ -48,7 +48,8 @@ public class EnemyAttackState : State<EnemyController>
         enemy.Anim.applyRootMotion = false;
         isAttacking = false;
 
-        enemy.ChangeState(EnemyStates.RetreatAfterAttack);
+        if (enemy.IsInState(EnemyStates.Attack))
+            enemy.ChangeState(EnemyStates.RetreatAfterAttack);
     }
 
     public override void Exit()

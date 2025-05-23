@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public enum EnemyStates {  Idle, CombatMovement, Attack , RetreatAfterAttack}
+public enum EnemyStates {  Idle, CombatMovement, Attack , RetreatAfterAttack, Dead }
 
 public class EnemyController : MonoBehaviour
 {
@@ -22,6 +22,8 @@ public class EnemyController : MonoBehaviour
 
     public MeleeFighter Fighter { get; private set; }
 
+    public VisionSensor visionSensor { get; set; }
+
     private void Start()
     {
         NavAgent = GetComponent<NavMeshAgent>();
@@ -33,6 +35,7 @@ public class EnemyController : MonoBehaviour
         stateDict[EnemyStates.CombatMovement] = GetComponent<CombatMovementState>();
         stateDict[EnemyStates.Attack] = GetComponent<EnemyAttackState>();
         stateDict[EnemyStates.RetreatAfterAttack] = GetComponent<RetreatAfterAttackState>();
+        stateDict[EnemyStates.Dead] = GetComponent<DeadState>();
 
         StateMachine = new StateMachine<EnemyController>(this);
         StateMachine.ChangeState(stateDict[EnemyStates.Idle]);

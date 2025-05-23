@@ -15,9 +15,26 @@ public class CombatController : MonoBehaviour
     private void Update()
     {
         // 마우스 좌클릭 시 공격 시도
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
+            // var enemy = EnemyManager.i.GetAttackingEnemy();
+            // if (enemy != null && enemy.Fighter.IsCounterable && !meeleFighter.inAction)
+            // {
+            //     //StartCoroutine(meeleFighter.PerformCounterAttack(enemy));
+            // }
+            // else
+            // {
+            //     meeleFighter.TryToAttack();
+            // }
             meeleFighter.TryToAttack();
+        }
+        if (Input.GetMouseButtonDown(1))
+        { 
+            var enemy = EnemyManager.i.GetAttackingEnemy();
+            if (enemy != null && enemy.Fighter.IsCounterable && !meeleFighter.inAction)
+            {
+                StartCoroutine(meeleFighter.PerformCounterAttack(enemy));
+            }
         }
     }
 }

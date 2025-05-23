@@ -32,23 +32,28 @@ public class EnemyManager : MonoBehaviour
             return;
 
         if (!enemiesInRange.Any(e => e.IsInState(EnemyStates.Attack)))
+        {
+            if (notAttackingTimer > 0)
             {
-                if (notAttackingTimer > 0)
-                {
-                    notAttackingTimer -= Time.deltaTime;
-                }
-
-                if (notAttackingTimer <= 0)
-                {
-                    var attackingEnemy = SelectEnemyForAttack();
-                    attackingEnemy.ChangeState(EnemyStates.Attack);
-                    notAttackingTimer = Random.Range(timeRangeBetweenAttacks.x, timeRangeBetweenAttacks.y);
-                }
+                notAttackingTimer -= Time.deltaTime;
             }
+
+            if (notAttackingTimer <= 0)
+            {
+                var attackingEnemy = SelectEnemyForAttack();
+                attackingEnemy.ChangeState(EnemyStates.Attack);
+                notAttackingTimer = Random.Range(timeRangeBetweenAttacks.x, timeRangeBetweenAttacks.y);
+            }
+        }
     }
 
     EnemyController SelectEnemyForAttack()
     {
         return enemiesInRange.OrderByDescending(e => e.combatMovementTimer).FirstOrDefault();
+    }
+
+    public EnemyController GetAttackingEnemy()
+    {
+        return enemiesInRange.First(e => e.IsInState(EnemyStates.Attack));
     }
 }

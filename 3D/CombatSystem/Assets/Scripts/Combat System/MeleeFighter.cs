@@ -17,6 +17,7 @@ public class MeleeFighter : MonoBehaviour
     Animator animator;
     // 현재 공격 동작 중인지 확인하는 플래그
     public bool inAction { get; private set; } = false;
+    public bool inCounter { get; set; } = false;
 
     public AttackState attackState { get; private set; }
     bool doCombo;
@@ -81,12 +82,15 @@ public class MeleeFighter : MonoBehaviour
 
             if (attackState == AttackState.Windup)
             {
+                if (inCounter)
+                    break;
+
                 if (normalizedTime >= attacks[comboCount].ImpactStartTime)
-                {
-                    attackState = AttackState.Impact;
-                    //콜라이더 키고
-                    EnableHitBox(attacks[comboCount]);
-                }
+                    {
+                        attackState = AttackState.Impact;
+                        //콜라이더 키고
+                        EnableHitBox(attacks[comboCount]);
+                    }
             }
             else if (attackState == AttackState.Impact)
             {
@@ -146,6 +150,34 @@ public class MeleeFighter : MonoBehaviour
         inAction = false;
     }
 
+    public IEnumerator PerformCounterAttack(EnemyController opponet)
+    {
+        inAction = true;
+        inCounter = true;
+
+        opponet.Fighter.inCounter = true;
+        opponet.ChangeState(EnemyStates.Dead);
+
+        var dispVec = opponet.transform.position - transform.position;
+        dispVec.y = 0f;
+        transform.rotation = Quaternion.LookRotation(dispVec);
+        opponet.transform.rotation = Quaternion.LookRotation(-dispVec);
+        
+        animator.CrossFade("CounterAttack", 0.2f);
+        opponet.Anim.CrossFade("CounterAttackVictim", 0.2f);
+
+        yield return null;
+
+        var animState = animator.GetNextAnimatorStateInfo(1);
+
+        yield return new WaitForSeconds(animState.length * 0.8f);
+
+        inAction = false;
+        inCounter = false;
+
+        opponet.Fighter.inCounter = false;
+    }
+
     void EnableHitBox(AttackData attack)
     {
         switch (attack.HitboxToUse)
@@ -186,4 +218,6 @@ public class MeleeFighter : MonoBehaviour
     }
 
     public List<AttackData> Attacks => attacks;
+
+    public bool IsCounterable => attackState == AttackState.Windup && comboCount == 0;
 }
