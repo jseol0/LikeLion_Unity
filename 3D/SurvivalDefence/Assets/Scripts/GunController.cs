@@ -32,6 +32,9 @@ public class GunController : MonoBehaviour
     private Crosshair theCrosshair;
 
     [SerializeField]
+    private PlayerController thePlayerController;
+
+    [SerializeField]
     private GameObject hit_effect_prefab;
 
     void Start()
@@ -63,7 +66,7 @@ public class GunController : MonoBehaviour
 
     private void TryFire()
     {
-        if (Input.GetButton("Fire1") && currentFireRate <= 0 && !isReload)
+        if (Input.GetButton("Fire1") && currentFireRate <= 0 && !isReload && !thePlayerController.IsRun())
         {
             Fire();
         }
@@ -103,6 +106,7 @@ public class GunController : MonoBehaviour
                         0)
             , out hitInfo, currentGun.range))
         {
+            Debug.Log(hitInfo.transform.name);
             GameObject clone = Instantiate(hit_effect_prefab, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
             Destroy(clone, 2f);
         }

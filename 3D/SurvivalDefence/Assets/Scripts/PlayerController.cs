@@ -43,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody myRigid;
     private GunController theGunController;
     private Crosshair theCrosshair;
+    private StatusController theStatusController;
 
     void Start()
     {
@@ -53,7 +54,8 @@ public class PlayerController : MonoBehaviour
         myRigid = GetComponent<Rigidbody>();
         theGunController = FindFirstObjectByType<GunController>();
         theCrosshair = FindFirstObjectByType<Crosshair>();
-        
+        theStatusController = FindFirstObjectByType<StatusController>();
+
         applySpeed = walkSpeed;
         originPosY = theCamera.transform.localPosition.y;
         applyCrouchPosY = originPosY;
@@ -81,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
     private void Crouch()
     {
-        if(isWalk)
+        if (isWalk)
         {
             isWalk = false;
             theCrosshair.WalkingAnimation(isWalk);
@@ -130,7 +132,7 @@ public class PlayerController : MonoBehaviour
 
     private void TryJump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)
+        if (Input.GetKeyDown(KeyCode.Space) && isGround && theStatusController.GetCurrentSp() > 0)
         {
             Jump();
         }
@@ -141,16 +143,17 @@ public class PlayerController : MonoBehaviour
         if (isCrouch)
             Crouch();
 
+        theStatusController.DecreaseStamina(100);
         myRigid.linearVelocity = transform.up * jumpForce;
     }
 
     private void TryRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && theStatusController.GetCurrentSp() > 0)
         {
             Running();
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) || theStatusController.GetCurrentSp() <= 0)
         {
 
             RunningCancel();
@@ -163,9 +166,10 @@ public class PlayerController : MonoBehaviour
             Crouch();
 
         theGunController.CancelFineSight();
-        
+
         isRun = true;
         theCrosshair.RunningAnimation(isRun);
+        theStatusController.DecreaseStamina(10);
         applySpeed = runSpeed;
     }
 
@@ -227,5 +231,10 @@ public class PlayerController : MonoBehaviour
         float _yRotation = Input.GetAxisRaw("Mouse X");
         Vector3 _characterRotationY = new Vector3(0f, _yRotation, 0f) * lookSenesitivity;
         myRigid.MoveRotation(myRigid.rotation * Quaternion.Euler(_characterRotationY));
+    }
+
+    public bool IsRun()
+    {
+        return isRun;
     }
 }
